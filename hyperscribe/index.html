@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="/src/styles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HyperScribe</title>
+    <script type="module" src="/src/main.ts" defer></script>
+  </head>
+
+  <body>
+    <main class="app">
+      <div id="budget" class="budget">
+        <button
+          id="settings-btn"
+          class="icon-btn-ghost"
+          title="Einstellungen"
+          aria-label="Einstellungen"
+        >
+          <span id="settings-icon"></span>
+        </button>
+        <span id="budget-used">Verbrauch: –</span>
+      </div>
+
+      <div id="settings-overlay" class="modal-overlay is-hidden">
+        <div class="modal">
+          <h2 class="modal-title">Deepgram-Zugang</h2>
+          <label class="modal-field">
+            API-Key
+            <input id="settings-api-key" type="password" autocomplete="off" />
+          </label>
+          <p id="settings-error" class="modal-error is-hidden"></p>
+          <div class="modal-actions">
+            <button type="button" id="settings-cancel" class="btn-text">Abbrechen</button>
+            <button type="button" id="settings-save" class="btn-text btn-text-primary">
+              Speichern
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <section id="dropzone" class="dropzone" tabindex="0">
+        <div id="dropzone-icon" class="dropzone-icon"></div>
+        <p id="dropzone-text" class="dropzone-text">
+          Audiodatei hier ablegen oder klicken zum Auswählen
+        </p>
+        <p id="dropzone-file" class="dropzone-file"></p>
+      </section>
+
+      <div id="status-row" class="status-row">
+        <div id="progress" class="progress">
+          <div class="progress-dots">
+            <span class="dot" data-step="preparing">1</span>
+            <span class="dot" data-step="transcribing">2</span>
+            <span class="dot" data-step="done">3</span>
+          </div>
+          <span id="progress-text" class="progress-text"></span>
+        </div>
+
+        <div id="controls" class="controls">
+          <div id="language" class="language-chips">
+            <button type="button" class="chip is-active" data-lang="auto">Auto</button>
+            <button type="button" class="chip" data-lang="de">DE</button>
+            <button type="button" class="chip" data-lang="en">EN</button>
+          </div>
+          <div class="action-buttons">
+            <button
+              id="start-btn"
+              class="icon-btn"
+              disabled
+              title="Transkription starten"
+              aria-label="Transkription starten"
+            >
+              <span id="start-icon"></span>
+            </button>
+            <button
+              id="download-btn"
+              class="icon-btn secondary"
+              disabled
+              title="Transkript herunterladen"
+              aria-label="Transkript herunterladen"
+            >
+              <span id="download-icon"></span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <p id="progress-error" class="progress-error is-hidden"></p>
+    </main>
+  </body>
+</html>

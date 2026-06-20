@@ -1,0 +1,397 @@
+:root {
+  font-family: -apple-system, "Segoe UI", Avenir, Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color: #1a1a1a;
+  background-color: #f6f6f7;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+/* 12x12 grid for positioning all UI elements */
+.app {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto 1fr auto auto;
+  gap: 8px;
+  height: 100vh;
+  padding: 24px;
+}
+
+.budget {
+  grid-column: 1 / 13;
+  grid-row: 1 / 2;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  font-size: 0.8rem;
+  color: #9a9ca1;
+}
+
+.icon-btn-ghost {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  color: #9a9ca1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+}
+
+.icon-btn-ghost:hover {
+  color: #1a1a1a;
+}
+
+.icon-btn-ghost svg {
+  width: 16px;
+  height: 16px;
+}
+
+.dropzone {
+  grid-column: 1 / 13;
+  grid-row: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 2px dashed #c7c9cd;
+  border-radius: 16px;
+  background: #ffffff;
+  cursor: pointer;
+  transition: border-color 0.15s, background-color 0.15s;
+}
+
+.dropzone:hover,
+.dropzone:focus-visible {
+  border-color: #6366f1;
+  background: #f5f5ff;
+  outline: none;
+}
+
+.dropzone.is-dragover {
+  border-color: #6366f1;
+  background: #eef0ff;
+}
+
+.dropzone-icon {
+  color: #6366f1;
+}
+
+.dropzone-icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+.dropzone-text {
+  margin: 0;
+  color: #5b5d63;
+  font-size: 0.95rem;
+}
+
+.dropzone-file {
+  margin: 0;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.status-row {
+  grid-column: 1 / 13;
+  grid-row: 3 / 4;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #d8d9dd;
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: background-color 0.2s;
+}
+
+.dot[data-step="preparing"].is-active {
+  background: #ef4444;
+}
+
+.dot[data-step="transcribing"].is-active {
+  background: #eab308;
+}
+
+.dot[data-step="done"].is-active {
+  background: #22c55e;
+}
+
+.progress-text {
+  font-size: 0.9rem;
+  color: #5b5d63;
+}
+
+.progress-error {
+  grid-column: 1 / 13;
+  grid-row: 4 / 5;
+  margin: 4px 0 0;
+  color: #dc2626;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.progress-error.is-hidden {
+  display: none;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.language-chips {
+  display: flex;
+  gap: 6px;
+}
+
+.chip {
+  border: 1px solid #d8d9dd;
+  background: #ffffff;
+  border-radius: 999px;
+  padding: 4px 14px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  font-family: inherit;
+  color: #5b5d63;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.chip:hover {
+  border-color: #6366f1;
+}
+
+.chip.is-active {
+  background: #6366f1;
+  border-color: #6366f1;
+  color: #ffffff;
+}
+
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.icon-btn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  background: #6366f1;
+  color: #ffffff;
+  transition: opacity 0.15s, background-color 0.15s;
+}
+
+.icon-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.icon-btn:not(:disabled):hover {
+  background: #4f52d6;
+}
+
+.icon-btn.secondary {
+  background: #ffffff;
+  border-color: #d8d9dd;
+  color: #1a1a1a;
+}
+
+.icon-btn.secondary:not(:disabled) {
+  background: #22c55e;
+  border-color: #22c55e;
+  color: #ffffff;
+}
+
+.icon-btn.secondary:not(:disabled):hover {
+  background: #16a34a;
+  border-color: #16a34a;
+}
+
+.icon-btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal-overlay.is-hidden {
+  display: none;
+}
+
+.modal {
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 24px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.modal-title {
+  margin: 0;
+  font-size: 1.05rem;
+}
+
+.modal-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.85rem;
+  color: #5b5d63;
+}
+
+.modal-field input {
+  border: 1px solid #d8d9dd;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #1a1a1a;
+}
+
+.modal-field input:focus {
+  outline: none;
+  border-color: #6366f1;
+}
+
+.modal-error {
+  margin: 0;
+  color: #dc2626;
+  font-size: 0.85rem;
+}
+
+.modal-error.is-hidden {
+  display: none;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.btn-text {
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #5b5d63;
+  cursor: pointer;
+  padding: 4px 6px;
+}
+
+.btn-text-primary {
+  color: #6366f1;
+}
+
+.btn-text.is-hidden {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color: #f0f0f0;
+    background-color: #1f1f1f;
+  }
+
+  .dropzone {
+    background: #2a2a2a;
+    border-color: #3f3f42;
+  }
+
+  .dropzone:hover,
+  .dropzone:focus-visible {
+    background: #26263a;
+  }
+
+  .dropzone-text {
+    color: #b5b6ba;
+  }
+
+  .dropzone-file {
+    color: #f0f0f0;
+  }
+
+  .chip {
+    background: #2a2a2a;
+    color: #f0f0f0;
+    border-color: #3f3f42;
+  }
+
+  .icon-btn.secondary {
+    background: #2a2a2a;
+    color: #f0f0f0;
+    border-color: #3f3f42;
+  }
+
+  .modal {
+    background: #2a2a2a;
+  }
+
+  .modal-field input {
+    background: #1f1f1f;
+    border-color: #3f3f42;
+    color: #f0f0f0;
+  }
+}
