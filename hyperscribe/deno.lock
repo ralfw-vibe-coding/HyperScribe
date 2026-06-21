@@ -3,6 +3,7 @@
   "specifiers": {
     "npm:@tauri-apps/api@2": "2.11.1",
     "npm:@tauri-apps/cli@2": "2.11.3",
+    "npm:@tauri-apps/plugin-clipboard-manager@^2.3.2": "2.3.2",
     "npm:@tauri-apps/plugin-dialog@^2.7.1": "2.7.1",
     "npm:@tauri-apps/plugin-opener@2": "2.5.4",
     "npm:lucide@^1.21.0": "1.21.0",
@@ -340,6 +341,12 @@
       ],
       "bin": true
     },
+    "@tauri-apps/plugin-clipboard-manager@2.3.2": {
+      "integrity": "sha512-CUlb5Hqi2oZbcZf4VUyUH53XWPPdtpw43EUpCza5HWZJwxEoDowFzNUDt1tRUXA8Uq+XPn17Ysfptip33sG4eQ==",
+      "dependencies": [
+        "@tauri-apps/api"
+      ]
+    },
     "@tauri-apps/plugin-dialog@2.7.1": {
       "integrity": "sha512-OK1UBXYt+ojcmxMktzzuyonYIFta8CmAASpX+CA+DTGK24KlHjhYI6x2iOJ/TjZF4N7/ACK1oFmEOjIY9IhzOQ==",
       "dependencies": [
@@ -493,6 +500,7 @@
       "dependencies": [
         "npm:@tauri-apps/api@2",
         "npm:@tauri-apps/cli@2",
+        "npm:@tauri-apps/plugin-clipboard-manager@^2.3.2",
         "npm:@tauri-apps/plugin-dialog@^2.7.1",
         "npm:@tauri-apps/plugin-opener@2",
         "npm:lucide@^1.21.0",

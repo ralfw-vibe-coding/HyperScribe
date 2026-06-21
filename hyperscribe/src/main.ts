@@ -3,7 +3,16 @@ import { listen } from "@tauri-apps/api/event";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
 import { open, save } from "@tauri-apps/plugin-dialog";
 import { dirname, basename, join, downloadDir } from "@tauri-apps/api/path";
-import { createElement, UploadCloud, FileMusic, Play, Download, Settings as SettingsIcon } from "lucide";
+import { readText } from "@tauri-apps/plugin-clipboard-manager";
+import {
+  createElement,
+  UploadCloud,
+  FileMusic,
+  Play,
+  Download,
+  Settings as SettingsIcon,
+  ClipboardPaste,
+} from "lucide";
 
 const AUDIO_EXTENSIONS = ["mp3", "wav", "m4a", "aac", "ogg", "opus", "flac", "webm", "mp4"];
 
@@ -27,6 +36,7 @@ let transcriptFileName = "";
 let startBalance: number | null = null;
 let lastUploadDir: string | null = null;
 let lastDownloadDir: string | null = null;
+let lastSeenClipboardText: string | null = null;
 
 const dropzone = document.querySelector<HTMLElement>("#dropzone")!;
 const dropzoneIcon = document.querySelector<HTMLElement>("#dropzone-icon")!;
@@ -48,11 +58,16 @@ const settingsApiKeyInput = document.querySelector<HTMLInputElement>("#settings-
 const settingsErrorEl = document.querySelector<HTMLElement>("#settings-error")!;
 const settingsCancelBtn = document.querySelector<HTMLButtonElement>("#settings-cancel")!;
 const settingsSaveBtn = document.querySelector<HTMLButtonElement>("#settings-save")!;
+const clipboardHint = document.querySelector<HTMLElement>("#clipboard-hint")!;
+const clipboardHintPathEl = document.querySelector<HTMLElement>("#clipboard-hint-path")!;
+const clipboardHintBtn = document.querySelector<HTMLButtonElement>("#clipboard-hint-btn")!;
+const clipboardHintIcon = document.querySelector<HTMLElement>("#clipboard-hint-icon")!;
 
 startIcon.appendChild(createElement(Play));
 downloadIcon.appendChild(createElement(Download));
 dropzoneIcon.appendChild(createElement(UploadCloud));
 settingsIcon.appendChild(createElement(SettingsIcon));
+clipboardHintIcon.appendChild(createElement(ClipboardPaste));
 
 languageChips.forEach((chip) => {
   chip.addEventListener("click", () => {
@@ -127,6 +142,49 @@ function isAudioFile(path: string): boolean {
   const ext = path.split(".").pop()?.toLowerCase() ?? "";
   return AUDIO_EXTENSIONS.includes(ext);
 }
+
+function stripQuotes(text: string): string {
+  if (text.length >= 2) {
+    const first = text[0];
+    const last = text[text.length - 1];
+    if ((first === "'" && last === "'") || (first === '"' && last === '"')) {
+      return text.slice(1, -1);
+    }
+  }
+  return text;
+}
+
+function looksLikeAudioPath(text: string): boolean {
+  return text.length > 0 && text.length < 1024 && !text.includes("\n") && isAudioFile(text);
+}
+
+async function pollClipboard() {
+  let text: string;
+  try {
+    text = await readText();
+  } catch {
+    return;
+  }
+  if (text === lastSeenClipboardText) return;
+  lastSeenClipboardText = text;
+  const candidate = stripQuotes(text.trim());
+  if (looksLikeAudioPath(candidate)) {
+    clipboardHintPathEl.textContent = candidate;
+    clipboardHint.classList.remove("is-hidden");
+  } else {
+    clipboardHint.classList.add("is-hidden");
+  }
+}
+
+setInterval(() => void pollClipboard(), 1000);
+void pollClipboard();
+
+clipboardHintBtn.addEventListener("click", async () => {
+  const path = clipboardHintPathEl.textContent;
+  if (!path) return;
+  clipboardHint.classList.add("is-hidden");
+  await selectFile(path);
+});
 
 async function selectFile(path: string) {
   if (!isAudioFile(path)) {
